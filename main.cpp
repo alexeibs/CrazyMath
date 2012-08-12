@@ -9,8 +9,8 @@ auto d_global = derivative(global);
 
 int main()
 {
-	auto f1 = (Pow(X, 3) + 2 * Sqr(X) - 4 * X + 1 / Sqrt(X)) * (Sin(X) + Cos(X) * (Log(5, X) - Exp(2, X)));
-	auto f2 = derivative(f1);
+	auto f1 = (Pow(X, 3) + 2 * Sqr(X) - 4 * X + 1 / Sqrt(1 - Sqr(X))) * (Sin(X) + Cos(X) * (Log(5, X) - Exp(2, X)));
+	auto f2 = derivative(f1) * Sqrt(X - Tg(X / 4));
 	auto f3 = [](double x) -> double { return sin(x); };
 	auto df1 = derivative(f1);
 	auto df2 = derivative(f2);
