@@ -267,7 +267,7 @@ public:
 	}
 	double operator()(double x)
 	{
-		return (m_f(x + m_dx) - m_f(x)) / 1e-3;
+		return (m_f(x + m_dx) - m_f(x)) / m_dx;
 	}
 	F m_f;
 	double m_dx;
