@@ -10,3 +10,14 @@
 *.lai
 *.la
 *.a
+
+# Visual Studio files
+*.opensdf
+*.sdf
+*.suo
+*.vcxproj.user
+
+# Binaries
+Debug/
+Release/
+ipch/
