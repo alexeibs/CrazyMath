@@ -7,6 +7,10 @@ using namespace CrazyMath;
 auto global = Tg(X) + Ctg(X) + Asin(X) * Acos(X) - Atg(X) / Actg(X);
 auto d_global = derivative(global);
 
+const auto func = Sqr(X) * Sqrt(X);
+const auto d_func = derivative(func);
+const double d_func_value = d_func(1);
+
 int main()
 {
 	auto f1 = (Pow(X, 3) + 2 * Sqr(X) - 4 * X + 1 / Sqrt(1 - Sqr(X))) * (Sin(X) + Cos(X) * (Log(5, X) - Exp(2, X)));
@@ -22,6 +26,8 @@ int main()
 	cout << f3(0) << " \t" << df3(0) << endl;
 	cout << global(0.5) << " \t" << d_global(0.5) << endl;
 	
+	cout << d_func_value << endl;
+
 	char temp[4];
 	cout << "\nPress ENTER to exit..." << endl;
 	cin.getline(temp, 3);

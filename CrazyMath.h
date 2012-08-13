@@ -20,7 +20,7 @@ public:
 		: m_const(x)
 	{
 	}
-	double operator()(double)
+	double operator()(double) const
 	{
 		return m_const;
 	}
@@ -34,7 +34,7 @@ public:
 class Simple {
 public:
 	typedef Simple Type;
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return x;
 	}
@@ -48,7 +48,7 @@ public:
 		: m_f1(f1), m_f2(f2)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return m_f1(x) + m_f2(x);
 	}
@@ -64,7 +64,7 @@ public:
 		: m_f1(f1), m_f2(f2)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return m_f1(x) - m_f2(x);
 	}
@@ -80,7 +80,7 @@ public:
 		: m_f1(f1), m_f2(f2)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return m_f1(x) * m_f2(x);
 	}
@@ -96,7 +96,7 @@ public:
 		: m_f1(f1), m_f2(f2)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return m_f1(x) / m_f2(x);
 	}
@@ -112,7 +112,7 @@ public:
 		: m_f(f), m_n(n)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return pow(m_f(x), m_n);
 	}
@@ -128,7 +128,7 @@ public:
 		: m_base(base), m_f(f)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return pow(m_base, m_f(x));
 	}
@@ -144,7 +144,7 @@ public:
 		: m_base(base), m_factor(1 / log(base)), m_f(f)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return log(m_f(x)) * m_factor;
 	}
@@ -160,7 +160,7 @@ public:
 		: m_f(f)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return sin(m_f(x));
 	}
@@ -175,7 +175,7 @@ public:
 		: m_f(f)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return cos(m_f(x));
 	}
@@ -190,7 +190,7 @@ public:
 		: m_f(f)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return tan(m_f(x));
 	}
@@ -205,7 +205,7 @@ public:
 		: m_f(f)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return 1 / tan(m_f(x));
 	}
@@ -220,7 +220,7 @@ public:
 		: m_f(f)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return asin(m_f(x));
 	}
@@ -235,7 +235,7 @@ public:
 		: m_f(f)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return acos(m_f(x));
 	}
@@ -250,7 +250,7 @@ public:
 		: m_f(f)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return atan(m_f(x));
 	}
@@ -265,7 +265,7 @@ public:
 		: m_f(f)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return atan(1 / m_f(x));
 	}
@@ -562,14 +562,14 @@ public:
 		: m_f(f), m_dx(dx)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return (m_f(x + m_dx) - m_f(x)) / m_dx;
 	}
 	F m_f;
 	double m_dx;
 	typedef std::function<double (double)> Type;
-	Type expression()
+	Type expression() const
 	{
 		return [this](double x) -> double
 		{
@@ -583,11 +583,11 @@ class Derivative<Const> {
 public:
 	typedef Const Type;
 	Derivative<Const> (Const) {}
-	double operator()(double)
+	double operator()(double) const
 	{
 		return 0;
 	}
-	Type expression()
+	Type expression() const
 	{
 		return Const(0);
 	}
@@ -598,11 +598,11 @@ class Derivative<Simple> {
 public:
 	typedef Const Type;
 	Derivative<Simple> (Simple) {}
-	double operator()(double)
+	double operator()(double) const
 	{
 		return 1;
 	}
-	Type expression()
+	Type expression() const
 	{
 		return Const(1);
 	}
@@ -615,14 +615,14 @@ public:
 		: m_df1(f.m_f1), m_df2(f.m_f2)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return m_df1(x) + m_df2(x);
 	}
 	Derivative<F1> m_df1;
 	Derivative<F2> m_df2;
 	typedef typename Add<typename Derivative<F1>::Type, typename Derivative<F2>::Type> Type;
-	Type expression()
+	Type expression() const
 	{
 		return m_df1.expression() + m_df2.expression();
 	}
@@ -635,13 +635,13 @@ public:
 		: m_df1(f.m_f1)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return m_df1(x);
 	}
 	Derivative<F1> m_df1;
 	typedef typename Derivative<F1>::Type Type;
-	Type expression()
+	Type expression() const
 	{
 		return m_df1.expression();
 	}
@@ -654,13 +654,13 @@ public:
 		: m_df2(f.m_f2)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return m_df2(x);
 	}
 	Derivative<F2> m_df2;
 	typedef typename Derivative<F2>::Type Type;
-	Type expression()
+	Type expression() const
 	{
 		return m_df2.expression();
 	}
@@ -672,12 +672,12 @@ public:
 	Derivative< Add<Const, Const> > (const Add<Const, Const>& f)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return 0;
 	}
 	typedef Const Type;
-	Type expression()
+	Type expression() const
 	{
 		return Const(0);
 	}
@@ -689,12 +689,12 @@ public:
 	Derivative< Add<Simple, Simple> > (const Add<Simple, Simple>& f)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return 2;
 	}
 	typedef Const Type;
-	Type expression()
+	Type expression() const
 	{
 		return Const(2);
 	}
@@ -707,14 +707,14 @@ public:
 		: m_df1(f.m_f1), m_df2(f.m_f2)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return m_df1(x) - m_df2(x);
 	}
 	Derivative<F1> m_df1;
 	Derivative<F2> m_df2;
 	typedef typename Subtract<typename Derivative<F1>::Type, typename Derivative<F2>::Type> Type;
-	Type expression()
+	Type expression() const
 	{
 		return m_df1.expression() - m_df2.expression();
 	}
@@ -727,13 +727,13 @@ public:
 		: m_df1(f.m_f1)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return m_df1(x);
 	}
 	Derivative<F1> m_df1;
 	typedef typename Derivative<F1>::Type Type;
-	Type expression()
+	Type expression() const
 	{
 		return m_df1.expression();
 	}
@@ -746,13 +746,13 @@ public:
 		: m_df2(f.m_f2)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return -m_df2(x);
 	}
 	Derivative<F2> m_df2;
 	typedef typename Multiply<Const, typename Derivative<F2>::Type> Type;
-	Type expression()
+	Type expression() const
 	{
 		return Const(-1) * m_df2.expression();
 	}
@@ -764,12 +764,12 @@ public:
 	Derivative< Subtract<Const, Const> > (const Subtract<Const, Const>& f)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return 0;
 	}
 	typedef Const Type;
-	Type expression()
+	Type expression() const
 	{
 		return Const(0);
 	}
@@ -781,12 +781,12 @@ public:
 	Derivative< Subtract<Simple, Simple> > (const Subtract<Simple, Simple>& f)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return 0;
 	}
 	typedef Const Type;
-	Type expression()
+	Type expression() const
 	{
 		return Const(0);
 	}
@@ -799,7 +799,7 @@ public:
 		: m_f1(f.m_f1), m_f2(f.m_f2), m_df1(f.m_f1), m_df2(f.m_f2)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return m_df1(x) * m_f2(x) + m_f1(x) * m_df2(x);
 	}
@@ -808,7 +808,7 @@ public:
 	Derivative<F1> m_df1;
 	Derivative<F2> m_df2;
 	typedef typename Add<Multiply<typename Derivative<F1>::Type, F2>, Multiply<F1, typename Derivative<F2>::Type> > Type;
-	Type expression()
+	Type expression() const
 	{
 		return m_df1.expression() * m_f2 + m_f1 * m_df2.expression();
 	}
@@ -821,14 +821,14 @@ public:
 		: m_df1(f.m_f1), m_f2(f.m_f2)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return m_df1(x) * m_f2.m_const;
 	}
 	Derivative<F1> m_df1;
 	Const m_f2;
 	typedef typename Multiply<Const, typename Derivative<F1>::Type> Type;
-	Type expression()
+	Type expression() const
 	{
 		return m_f2 * m_df1.expression();
 	}
@@ -841,14 +841,14 @@ public:
 		: m_f1(f.m_f1), m_df2(f.m_f2)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return m_f1.m_const * m_df2(x);
 	}
 	Const m_f1;
 	Derivative<F2> m_df2;
 	typedef typename Multiply<Const, typename Derivative<F2>::Type> Type;
-	Type expression()
+	Type expression() const
 	{
 		return m_f1 * m_df2.expression();
 	}
@@ -860,12 +860,12 @@ public:
 	Derivative< Multiply<Const, Const> > (const Multiply<Const, Const>& f)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return 0;
 	}
 	typedef Const Type;
-	Type expression()
+	Type expression() const
 	{
 		return Const(0);
 	}
@@ -878,7 +878,7 @@ public:
 		: m_f(f.m_f), m_n(f.m_n), m_df(f.m_f)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return m_n * pow(m_f(x), m_n - 1) * m_df(x);
 	}
@@ -886,7 +886,7 @@ public:
 	double m_n;
 	Derivative<F> m_df;
 	typedef typename Multiply<typename Multiply<Const, typename Power<F> >, typename Derivative<F>::Type> Type;
-	Type expression()
+	Type expression() const
 	{
 		return (Const(m_n) * Pow(m_f, m_n - 1)) * m_df.expression();
 	}
@@ -898,12 +898,12 @@ public:
 	Derivative< Power<Const> > (const Power<Const>& f)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return 0;
 	}
 	typedef Const Type;
-	Type expression()
+	Type expression() const
 	{
 		return Const(0);
 	}
@@ -916,13 +916,13 @@ public:
 		: m_n(f.m_n)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return m_n * pow(x, m_n - 1);
 	}
 	double m_n;
 	typedef Multiply<Const, typename Power<Simple> > Type;
-	Type expression()
+	Type expression() const
 	{
 		return Const(m_n) * Pow(X, m_n - 1);
 	}
@@ -935,7 +935,7 @@ public:
 		: m_f1(f.m_f1), m_f2(f.m_f2), m_df1(f.m_f1), m_df2(f.m_f2)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		double f2 = m_f2(x);
 		return (m_df1(x) * f2 - m_f1(x) * m_df2(x)) / (f2 * f2);
@@ -945,7 +945,7 @@ public:
 	Derivative<F1> m_df1;
 	Derivative<F2> m_df2;
 	typedef Multiply<typename Subtract<typename Multiply<typename Derivative<F1>::Type, F2>, typename Multiply<F1, typename Derivative<F2>::Type> >, typename Power<F2> > Type;
-	Type expression()
+	Type expression() const
 	{
 		return (m_df1.expression() * m_f2 - m_f1 * m_df2.expression()) * Pow(m_f2, -2);
 	}
@@ -958,7 +958,7 @@ public:
 		: m_f1(f.m_f1), m_f2(f.m_f2), m_df2(f.m_f2)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		double f2 = m_f2(x);
 		return -m_f1.m_const * m_df2(x) / (f2 * f2);
@@ -967,7 +967,7 @@ public:
 	F2 m_f2;
 	Derivative<F2> m_df2;
 	typedef typename Multiply<Const, typename Multiply<typename Derivative<F2>::Type, typename Power<F2> > > Type;
-	Type expression()
+	Type expression() const
 	{
 		return Const(-m_f1.m_const) * (m_df2.expression() * Pow(m_f2, -2));
 	}
@@ -980,14 +980,14 @@ public:
 		: m_f2(1 / f.m_f2.m_const), m_df1(f.m_f1)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return m_f2.m_const * m_df1(x);
 	}
 	Const m_f2;
 	Derivative<F1> m_df1;
 	typedef typename Multiply<Const, typename Derivative<F1>::Type> Type;
-	Type expression()
+	Type expression() const
 	{
 		return m_f2 * m_df1.expression();
 	}
@@ -1000,13 +1000,13 @@ public:
 		: m_const(f.m_f1.m_const / f.m_f2.m_const)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return 0;
 	}
 	Const m_const;
 	typedef Const Type;
-	Type expression()
+	Type expression() const
 	{
 		return Const(0);
 	}
@@ -1020,7 +1020,7 @@ public:
 		, m_f(f.m_f), m_df(f.m_f)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return pow(m_base, m_f(x)) * m_factor * m_df(x);
 	}
@@ -1028,7 +1028,7 @@ public:
 	F m_f;
 	Derivative<F> m_df;
 	typedef typename Multiply<typename Multiply<typename Exponent<F>, Const>, typename Derivative<F>::Type> Type;
-	Type expression()
+	Type expression() const
 	{
 		return Exp(m_base, m_f) * m_factor * m_df.expression();
 	}
@@ -1041,7 +1041,7 @@ public:
 		: m_base(f.m_base), m_factor(1 / log(m_base)), m_f(f.m_f), m_df(f.m_f)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return m_factor * m_df(x) / x;
 	}
@@ -1049,7 +1049,7 @@ public:
 	F m_f;
 	Derivative<F> m_df;
 	typedef typename Divide<typename Multiply< Const, typename Derivative<F>::Type >, Simple> Type;
-	Type expression()
+	Type expression() const
 	{
 		return m_factor * m_df.expression() / X;
 	}
@@ -1062,14 +1062,14 @@ public:
 		: m_f(f.m_f), m_df(f.m_f)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return cos(m_f(x)) * m_df(x);
 	}
 	F m_f;
 	Derivative<F> m_df;
 	typedef typename Multiply<typename Cosine<F>, typename Derivative<F>::Type> Type;
-	Type expression()
+	Type expression() const
 	{
 		return Cos(m_f) * m_df.expression();
 	}
@@ -1082,14 +1082,14 @@ public:
 		: m_f(f.m_f), m_df(f.m_f)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		return -sin(m_f(x)) * m_df(x);
 	}
 	F m_f;
 	Derivative<F> m_df;
 	typedef typename Multiply<typename Multiply< Const, typename Sine<F> >, typename Derivative<F>::Type> Type;
-	Type expression()
+	Type expression() const
 	{
 		return (Const(-1) * Sin(m_f)) * m_df.expression();
 	}
@@ -1102,7 +1102,7 @@ public:
 		: m_f(f.m_f), m_df(f.m_f)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		double cosfx = cos(m_f(x));
 		return m_df(x) / (cosfx * cosfx);
@@ -1110,7 +1110,7 @@ public:
 	F m_f;
 	Derivative<F> m_df;
 	typedef typename Divide<typename Derivative<F>::Type, typename Multiply< typename Cosine<F>, typename Cosine<F> > > Type;
-	Type expression()
+	Type expression() const
 	{
 		return m_df.expression() / (Cos(m_f) * Cos(m_f));
 	}
@@ -1123,7 +1123,7 @@ public:
 		: m_f(f.m_f), m_df(f.m_f)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		double sinfx = sin(m_f(x));
 		return -m_df(x) / (sinfx * sinfx);
@@ -1131,7 +1131,7 @@ public:
 	F m_f;
 	Derivative<F> m_df;
 	typedef typename Divide<typename Multiply<Const, typename Derivative<F>::Type>, typename Multiply< typename Sine<F>, typename Sine<F> > > Type;
-	Type expression()
+	Type expression() const
 	{
 		return Const(-1) * m_df.expression() / (Sin(m_f) * Sin(m_f));
 	}
@@ -1144,7 +1144,7 @@ public:
 		: m_f(f.m_f), m_df(f.m_f)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		double fx = m_f(x);
 		return m_df(x) / sqrt(1 - fx * fx);
@@ -1152,7 +1152,7 @@ public:
 	F m_f;
 	Derivative<F> m_df;
 	typedef typename Divide<typename Derivative<F>::Type, typename Power<typename Subtract<Const, typename Multiply<F, F> > > > Type;
-	Type expression()
+	Type expression() const
 	{
 		return m_df.expression() / Sqrt(1 - m_f * m_f);
 	}
@@ -1165,7 +1165,7 @@ public:
 		: m_f(f.m_f), m_df(f.m_f)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		double fx = m_f(x);
 		return -m_df(x) / sqrt(1 - fx * fx);
@@ -1173,7 +1173,7 @@ public:
 	F m_f;
 	Derivative<F> m_df;
 	typedef typename Divide<typename Multiply<Const, typename Derivative<F>::Type>, typename Power<typename Subtract<Const, typename Multiply<F, F> > > > Type;
-	Type expression()
+	Type expression() const
 	{
 		return (Const(-1) * m_df.expression()) / Sqrt(1 - m_f * m_f);
 	}
@@ -1186,7 +1186,7 @@ public:
 		: m_f(f.m_f), m_df(f.m_f)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		double fx = m_f(x);
 		return m_df(x) / (1 + fx * fx);
@@ -1194,7 +1194,7 @@ public:
 	F m_f;
 	Derivative<F> m_df;
 	typedef typename Divide<typename Derivative<F>::Type, typename Add<Const, typename Multiply<F, F> > > Type;
-	Type expression()
+	Type expression() const
 	{
 		return m_df.expression() / (Const(1) + Sqr(m_f));
 	}
@@ -1207,7 +1207,7 @@ public:
 		: m_f(f.m_f), m_df(f.m_f)
 	{
 	}
-	double operator()(double x)
+	double operator()(double x) const
 	{
 		double fx = m_f(x);
 		return -m_df(x) / (1 + fx * fx);
@@ -1215,7 +1215,7 @@ public:
 	F m_f;
 	Derivative<F> m_df;
 	typedef typename Divide<typename Multiply<Const, typename Derivative<F>::Type>, typename Add<Const, typename Multiply<F, F> > > Type;
-	Type expression()
+	Type expression() const
 	{
 		return (Const(-1) * m_df.expression()) / (Const(1) + Sqr(m_f));
 	}
