@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <functional>
+#include <type_traits>
 
 namespace CrazyMath {
 
@@ -43,7 +44,7 @@ public:
 template <class F1, class F2>
 class Add {
 public:
-	typedef typename Add<F1, F2> Type;
+	typedef Add<F1, F2> Type;
 	Add(const F1& f1, const F2& f2)
 		: m_f1(f1), m_f2(f2)
 	{
@@ -59,7 +60,7 @@ public:
 template <class F1, class F2>
 class Subtract {
 public:
-	typedef typename Subtract<F1, F2> Type;
+	typedef Subtract<F1, F2> Type;
 	Subtract(const F1& f1, const F2& f2)
 		: m_f1(f1), m_f2(f2)
 	{
@@ -75,7 +76,7 @@ public:
 template <class F1, class F2>
 class Multiply {
 public:
-	typedef typename Multiply<F1, F2> Type;
+	typedef Multiply<F1, F2> Type;
 	Multiply(const F1& f1, const F2& f2)
 		: m_f1(f1), m_f2(f2)
 	{
@@ -91,7 +92,7 @@ public:
 template <class F1, class F2>
 class Divide {
 public:
-	typedef typename Divide<F1, F2> Type;
+	typedef Divide<F1, F2> Type;
 	Divide(const F1& f1, const F2& f2)
 		: m_f1(f1), m_f2(f2)
 	{
@@ -107,7 +108,7 @@ public:
 template <class F>
 class Power {
 public:
-	typedef typename Power<F> Type;
+	typedef Power<F> Type;
 	Power(const F& f, double n)
 		: m_f(f), m_n(n)
 	{
@@ -123,7 +124,7 @@ public:
 template <class F>
 class Exponent {
 public:
-	typedef typename Exponent<F> Type;
+	typedef Exponent<F> Type;
 	Exponent(double base, const F& f)
 		: m_base(base), m_f(f)
 	{
@@ -139,7 +140,7 @@ public:
 template <class F>
 class Logarithm {
 public:
-	typedef typename Logarithm<F> Type;
+	typedef Logarithm<F> Type;
 	Logarithm(double base, const F& f)
 		: m_base(base), m_factor(1 / log(base)), m_f(f)
 	{
@@ -155,7 +156,7 @@ public:
 template <class F>
 class Sine {
 public:
-	typedef typename Sine<F> Type;
+	typedef Sine<F> Type;
 	Sine(const F& f)
 		: m_f(f)
 	{
@@ -170,7 +171,7 @@ public:
 template <class F>
 class Cosine {
 public:
-	typedef typename Cosine<F> Type;
+	typedef Cosine<F> Type;
 	Cosine(const F& f)
 		: m_f(f)
 	{
@@ -185,7 +186,7 @@ public:
 template <class F>
 class Tangent {
 public:
-	typedef typename Tangent<F> Type;
+	typedef Tangent<F> Type;
 	Tangent(const F& f)
 		: m_f(f)
 	{
@@ -200,7 +201,7 @@ public:
 template <class F>
 class Cotangent {
 public:
-	typedef typename Cotangent<F> Type;
+	typedef Cotangent<F> Type;
 	Cotangent(const F& f)
 		: m_f(f)
 	{
@@ -215,7 +216,7 @@ public:
 template <class F>
 class Arcsine {
 public:
-	typedef typename Arcsine<F> Type;
+	typedef Arcsine<F> Type;
 	Arcsine(const F& f)
 		: m_f(f)
 	{
@@ -230,7 +231,7 @@ public:
 template <class F>
 class Arccosine {
 public:
-	typedef typename Arccosine<F> Type;
+	typedef Arccosine<F> Type;
 	Arccosine(const F& f)
 		: m_f(f)
 	{
@@ -245,7 +246,7 @@ public:
 template <class F>
 class Arctangent {
 public:
-	typedef typename Arctangent<F> Type;
+	typedef Arctangent<F> Type;
 	Arctangent(const F& f)
 		: m_f(f)
 	{
@@ -260,7 +261,7 @@ public:
 template <class F>
 class Arccotangent {
 public:
-	typedef typename Arccotangent<F> Type;
+	typedef Arccotangent<F> Type;
 	Arccotangent(const F& f)
 		: m_f(f)
 	{
@@ -282,25 +283,25 @@ Add<F1, F2> operator+(const F1& f1, const F2& f2)
 }
 
 template <class F>
-Add<F, Const> operator+(double value, const F& f)
+typename std::enable_if<!std::is_arithmetic<F>::value, Add<F, Const>>::type operator+(double value, const F& f)
 {
 	return Add<F, Const>(f, Const(value));
 }
 
 template <class F>
-Add<F, Const> operator+(const F& f, int value)
+typename std::enable_if<!std::is_arithmetic<F>::value, Add<F, Const>>::type operator+(const F& f, int value)
 {
 	return Add<F, Const>(f, Const(value));
 }
 
 template <class F>
-Add<F, Const> operator+(int value, const F& f)
+typename std::enable_if<!std::is_arithmetic<F>::value, Add<F, Const>>::type operator+(int value, const F& f)
 {
 	return Add<F, Const>(f, Const(value));
 }
 
 template <class F>
-Add<F, Const> operator+(const F& f, double value)
+typename std::enable_if<!std::is_arithmetic<F>::value, Add<F, Const>>::type operator+(const F& f, double value)
 {
 	return Add<F, Const>(f, Const(value));
 }
@@ -312,25 +313,25 @@ Subtract<F1, F2> operator-(const F1& f1, const F2& f2)
 }
 
 template <class F>
-Subtract<F, Const> operator-(const F& f, double value)
+typename std::enable_if<!std::is_arithmetic<F>::value, Subtract<F, Const>>::type operator-(const F& f, double value)
 {
 	return Subtract<F, Const>(f, Const(value));
 }
 
 template <class F>
-Subtract<Const, F> operator-(double value, const F& f)
+typename std::enable_if<!std::is_arithmetic<F>::value, Subtract<Const, F>>::type operator-(double value, const F& f)
 {
 	return Subtract<Const, F>(Const(value), f);
 }
 
 template <class F>
-Subtract<F, Const> operator-(const F& f, int value)
+typename std::enable_if<!std::is_arithmetic<F>::value, Subtract<F, Const>>::type operator-(const F& f, int value)
 {
 	return Subtract<F, Const>(f, Const(value));
 }
 
 template <class F>
-Subtract<Const, F> operator-(int value, const F& f)
+typename std::enable_if<!std::is_arithmetic<F>::value, Subtract<Const, F>>::type operator-(int value, const F& f)
 {
 	return Subtract<Const, F>(Const(value), f);
 }
@@ -342,25 +343,25 @@ Multiply<F1, F2> operator*(const F1& f1, const F2& f2)
 }
 
 template <class F>
-Multiply<F, Const> operator*(const F& f, double value)
+typename std::enable_if<!std::is_arithmetic<F>::value, Multiply<F, Const>>::type operator*(const F& f, double value)
 {
 	return Multiply<F, Const>(f, Const(value));
 }
 
 template <class F>
-Multiply<F, Const> operator*(double value, const F& f)
+typename std::enable_if<!std::is_arithmetic<F>::value, Multiply<F, Const>>::type operator*(double value, const F& f)
 {
 	return Multiply<F, Const>(f, Const(value));
 }
 
 template <class F>
-Multiply<F, Const> operator*(const F& f, int value)
+typename std::enable_if<!std::is_arithmetic<F>::value, Multiply<F, Const>>::type operator*(const F& f, int value)
 {
 	return Multiply<F, Const>(f, Const(value));
 }
 
 template <class F>
-Multiply<F, Const> operator*(int value, const F& f)
+typename std::enable_if<!std::is_arithmetic<F>::value, Multiply<F, Const>>::type operator*(int value, const F& f)
 {
 	return Multiply<F, Const>(f, Const(value));
 }
@@ -372,25 +373,25 @@ Divide<F1, F2> operator/(const F1& f1, const F2& f2)
 }
 
 template <class F>
-Divide<F, Const> operator/(const F& f, double value)
+typename std::enable_if<!std::is_arithmetic<F>::value, Divide<F, Const>>::type operator/(const F& f1, double value)
 {
 	return Divide<F, Const>(f1, Const(value));
 }
 
 template <class F>
-Divide<Const, F> operator/(double value, const F& f)
+typename std::enable_if<!std::is_arithmetic<F>::value, Divide<Const, F>>::type operator/(double value, const F& f)
 {
 	return Divide<Const, F>(Const(value), f);
 }
 
 template <class F>
-Divide<F, Const> operator/(const F& f, int value)
+typename std::enable_if<!std::is_arithmetic<F>::value, Divide<F, Const>>::type operator/(const F& f, int value)
 {
 	return Divide<F, Const>(f, Const(value));
 }
 
 template <class F>
-Divide<Const, F> operator/(int value, const F& f)
+typename std::enable_if<!std::is_arithmetic<F>::value, Divide<Const, F>>::type operator/(int value, const F& f)
 {
 	return Divide<Const, F>(Const(value), f);
 }
@@ -621,7 +622,7 @@ public:
 	}
 	Derivative<F1> m_df1;
 	Derivative<F2> m_df2;
-	typedef typename Add<typename Derivative<F1>::Type, typename Derivative<F2>::Type> Type;
+	typedef Add<typename Derivative<F1>::Type, typename Derivative<F2>::Type> Type;
 	Type expression() const
 	{
 		return m_df1.expression() + m_df2.expression();
@@ -669,10 +670,10 @@ public:
 template <>
 class Derivative< Add<Const, Const> > {
 public:
-	Derivative< Add<Const, Const> > (const Add<Const, Const>& f)
+	Derivative< Add<Const, Const> > (const Add<Const, Const>& /*f*/)
 	{
 	}
-	double operator()(double x) const
+	double operator()(double /*x*/) const
 	{
 		return 0;
 	}
@@ -686,10 +687,10 @@ public:
 template <>
 class Derivative< Add<Simple, Simple> > {
 public:
-	Derivative< Add<Simple, Simple> > (const Add<Simple, Simple>& f)
+	Derivative< Add<Simple, Simple> > (const Add<Simple, Simple>& /*f*/)
 	{
 	}
-	double operator()(double x) const
+	double operator()(double /*x*/) const
 	{
 		return 2;
 	}
@@ -713,7 +714,7 @@ public:
 	}
 	Derivative<F1> m_df1;
 	Derivative<F2> m_df2;
-	typedef typename Subtract<typename Derivative<F1>::Type, typename Derivative<F2>::Type> Type;
+	typedef Subtract<typename Derivative<F1>::Type, typename Derivative<F2>::Type> Type;
 	Type expression() const
 	{
 		return m_df1.expression() - m_df2.expression();
@@ -751,7 +752,7 @@ public:
 		return -m_df2(x);
 	}
 	Derivative<F2> m_df2;
-	typedef typename Multiply<Const, typename Derivative<F2>::Type> Type;
+	typedef Multiply<Const, typename Derivative<F2>::Type> Type;
 	Type expression() const
 	{
 		return Const(-1) * m_df2.expression();
@@ -761,10 +762,10 @@ public:
 template <>
 class Derivative< Subtract<Const, Const> > {
 public:
-	Derivative< Subtract<Const, Const> > (const Subtract<Const, Const>& f)
+	Derivative< Subtract<Const, Const> > (const Subtract<Const, Const>& /*f*/)
 	{
 	}
-	double operator()(double x) const
+	double operator()(double /*x*/) const
 	{
 		return 0;
 	}
@@ -778,10 +779,10 @@ public:
 template <>
 class Derivative< Subtract<Simple, Simple> > {
 public:
-	Derivative< Subtract<Simple, Simple> > (const Subtract<Simple, Simple>& f)
+	Derivative< Subtract<Simple, Simple> > (const Subtract<Simple, Simple>& /*f*/)
 	{
 	}
-	double operator()(double x) const
+	double operator()(double /*x*/) const
 	{
 		return 0;
 	}
@@ -807,7 +808,7 @@ public:
 	F2 m_f2;
 	Derivative<F1> m_df1;
 	Derivative<F2> m_df2;
-	typedef typename Add<Multiply<typename Derivative<F1>::Type, F2>, Multiply<F1, typename Derivative<F2>::Type> > Type;
+	typedef Add<Multiply<typename Derivative<F1>::Type, F2>, Multiply<F1, typename Derivative<F2>::Type> > Type;
 	Type expression() const
 	{
 		return m_df1.expression() * m_f2 + m_f1 * m_df2.expression();
@@ -827,7 +828,7 @@ public:
 	}
 	Derivative<F1> m_df1;
 	Const m_f2;
-	typedef typename Multiply<Const, typename Derivative<F1>::Type> Type;
+	typedef Multiply<Const, typename Derivative<F1>::Type> Type;
 	Type expression() const
 	{
 		return m_f2 * m_df1.expression();
@@ -847,7 +848,7 @@ public:
 	}
 	Const m_f1;
 	Derivative<F2> m_df2;
-	typedef typename Multiply<Const, typename Derivative<F2>::Type> Type;
+	typedef Multiply<Const, typename Derivative<F2>::Type> Type;
 	Type expression() const
 	{
 		return m_f1 * m_df2.expression();
@@ -857,10 +858,10 @@ public:
 template <>
 class Derivative< Multiply<Const, Const> > {
 public:
-	Derivative< Multiply<Const, Const> > (const Multiply<Const, Const>& f)
+	Derivative< Multiply<Const, Const> > (const Multiply<Const, Const>& /*f*/)
 	{
 	}
-	double operator()(double x) const
+	double operator()(double /*x*/) const
 	{
 		return 0;
 	}
@@ -885,7 +886,7 @@ public:
 	F m_f;
 	double m_n;
 	Derivative<F> m_df;
-	typedef typename Multiply<typename Multiply<Const, typename Power<F> >, typename Derivative<F>::Type> Type;
+	typedef Multiply<Multiply<Const, Power<F> >, typename Derivative<F>::Type> Type;
 	Type expression() const
 	{
 		return (Const(m_n) * Pow(m_f, m_n - 1)) * m_df.expression();
@@ -895,10 +896,10 @@ public:
 template <>
 class Derivative< Power<Const> > {
 public:
-	Derivative< Power<Const> > (const Power<Const>& f)
+	Derivative< Power<Const> > (const Power<Const>& /*f*/)
 	{
 	}
-	double operator()(double x) const
+	double operator()(double /*x*/) const
 	{
 		return 0;
 	}
@@ -921,7 +922,7 @@ public:
 		return m_n * pow(x, m_n - 1);
 	}
 	double m_n;
-	typedef Multiply<Const, typename Power<Simple> > Type;
+	typedef Multiply<Const, Power<Simple> > Type;
 	Type expression() const
 	{
 		return Const(m_n) * Pow(X, m_n - 1);
@@ -944,7 +945,7 @@ public:
 	F2 m_f2;
 	Derivative<F1> m_df1;
 	Derivative<F2> m_df2;
-	typedef Multiply<typename Subtract<typename Multiply<typename Derivative<F1>::Type, F2>, typename Multiply<F1, typename Derivative<F2>::Type> >, typename Power<F2> > Type;
+	typedef Multiply<Subtract<Multiply<typename Derivative<F1>::Type, F2>, Multiply<F1, typename Derivative<F2>::Type> >, Power<F2> > Type;
 	Type expression() const
 	{
 		return (m_df1.expression() * m_f2 - m_f1 * m_df2.expression()) * Pow(m_f2, -2);
@@ -966,7 +967,7 @@ public:
 	Const m_f1;
 	F2 m_f2;
 	Derivative<F2> m_df2;
-	typedef typename Multiply<Const, typename Multiply<typename Derivative<F2>::Type, typename Power<F2> > > Type;
+	typedef Multiply<Const, Multiply<typename Derivative<F2>::Type, Power<F2> > > Type;
 	Type expression() const
 	{
 		return Const(-m_f1.m_const) * (m_df2.expression() * Pow(m_f2, -2));
@@ -986,7 +987,7 @@ public:
 	}
 	Const m_f2;
 	Derivative<F1> m_df1;
-	typedef typename Multiply<Const, typename Derivative<F1>::Type> Type;
+	typedef Multiply<Const, typename Derivative<F1>::Type> Type;
 	Type expression() const
 	{
 		return m_f2 * m_df1.expression();
@@ -1000,7 +1001,7 @@ public:
 		: m_const(f.m_f1.m_const / f.m_f2.m_const)
 	{
 	}
-	double operator()(double x) const
+	double operator()(double /*x*/) const
 	{
 		return 0;
 	}
@@ -1027,7 +1028,7 @@ public:
 	double m_base, m_factor;
 	F m_f;
 	Derivative<F> m_df;
-	typedef typename Multiply<typename Multiply<typename Exponent<F>, Const>, typename Derivative<F>::Type> Type;
+	typedef Multiply<Multiply<Exponent<F>, Const>, typename Derivative<F>::Type> Type;
 	Type expression() const
 	{
 		return Exp(m_base, m_f) * m_factor * m_df.expression();
@@ -1048,7 +1049,7 @@ public:
 	double m_base, m_factor;
 	F m_f;
 	Derivative<F> m_df;
-	typedef typename Divide<typename Multiply< Const, typename Derivative<F>::Type >, Simple> Type;
+	typedef Divide<Multiply< Const, typename Derivative<F>::Type >, Simple> Type;
 	Type expression() const
 	{
 		return m_factor * m_df.expression() / X;
@@ -1068,7 +1069,7 @@ public:
 	}
 	F m_f;
 	Derivative<F> m_df;
-	typedef typename Multiply<typename Cosine<F>, typename Derivative<F>::Type> Type;
+	typedef Multiply<Cosine<F>, typename Derivative<F>::Type> Type;
 	Type expression() const
 	{
 		return Cos(m_f) * m_df.expression();
@@ -1088,7 +1089,7 @@ public:
 	}
 	F m_f;
 	Derivative<F> m_df;
-	typedef typename Multiply<typename Multiply< Const, typename Sine<F> >, typename Derivative<F>::Type> Type;
+	typedef Multiply<Multiply< Const, Sine<F> >, typename Derivative<F>::Type> Type;
 	Type expression() const
 	{
 		return (Const(-1) * Sin(m_f)) * m_df.expression();
@@ -1109,7 +1110,7 @@ public:
 	}
 	F m_f;
 	Derivative<F> m_df;
-	typedef typename Divide<typename Derivative<F>::Type, typename Multiply< typename Cosine<F>, typename Cosine<F> > > Type;
+	typedef Divide<typename Derivative<F>::Type, Multiply< Cosine<F>, Cosine<F> > > Type;
 	Type expression() const
 	{
 		return m_df.expression() / (Cos(m_f) * Cos(m_f));
@@ -1130,7 +1131,7 @@ public:
 	}
 	F m_f;
 	Derivative<F> m_df;
-	typedef typename Divide<typename Multiply<Const, typename Derivative<F>::Type>, typename Multiply< typename Sine<F>, typename Sine<F> > > Type;
+	typedef Divide<Multiply<Const, typename Derivative<F>::Type>, Multiply< Sine<F>, Sine<F> > > Type;
 	Type expression() const
 	{
 		return Const(-1) * m_df.expression() / (Sin(m_f) * Sin(m_f));
@@ -1151,7 +1152,7 @@ public:
 	}
 	F m_f;
 	Derivative<F> m_df;
-	typedef typename Divide<typename Derivative<F>::Type, typename Power<typename Subtract<Const, typename Multiply<F, F> > > > Type;
+	typedef Divide<typename Derivative<F>::Type, Power<Subtract<Const, Multiply<F, F> > > > Type;
 	Type expression() const
 	{
 		return m_df.expression() / Sqrt(1 - m_f * m_f);
@@ -1172,7 +1173,7 @@ public:
 	}
 	F m_f;
 	Derivative<F> m_df;
-	typedef typename Divide<typename Multiply<Const, typename Derivative<F>::Type>, typename Power<typename Subtract<Const, typename Multiply<F, F> > > > Type;
+	typedef Divide<Multiply<Const, typename Derivative<F>::Type>, Power<Subtract<Const, Multiply<F, F> > > > Type;
 	Type expression() const
 	{
 		return (Const(-1) * m_df.expression()) / Sqrt(1 - m_f * m_f);
@@ -1193,7 +1194,7 @@ public:
 	}
 	F m_f;
 	Derivative<F> m_df;
-	typedef typename Divide<typename Derivative<F>::Type, typename Add<Const, typename Multiply<F, F> > > Type;
+	typedef Divide<typename Derivative<F>::Type, Add<Const, Multiply<F, F> > > Type;
 	Type expression() const
 	{
 		return m_df.expression() / (Const(1) + Sqr(m_f));
@@ -1214,7 +1215,7 @@ public:
 	}
 	F m_f;
 	Derivative<F> m_df;
-	typedef typename Divide<typename Multiply<Const, typename Derivative<F>::Type>, typename Add<Const, typename Multiply<F, F> > > Type;
+	typedef Divide<Multiply<Const, typename Derivative<F>::Type>, Add<Const, Multiply<F, F> > > Type;
 	Type expression() const
 	{
 		return (Const(-1) * m_df.expression()) / (Const(1) + Sqr(m_f));
